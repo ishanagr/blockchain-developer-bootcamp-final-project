@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marriage registry</title>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Marriage Registry</h1>
+    <div id="mm-connection-message"></div>
+    <button id="mm-connect-button">connect to metamask</button><br>
+    <div id="app-display">
+        <div id="message"></div> <br>
+
+        <div id="get-cert">
+            <input id = "mc-input-cert" type="number" placeholder="Certificate ID"/>
+            <button id="mc-getCert-button">Retrieve Certificate</button>  
+            <div id="mc-cert-display">
+                <div>
+                    <label>Certificate ID:</label>
+                    <label id="certid"></label>    
+                </div>
+                <div>
+                    <label>First Spouse Name:</label>
+                    <label id="spouse1"></label><br>
+                    Address:<label id="spouse1-eth-add"></label>    
+                </div>
+                <div>
+                    <label>Second Spouse Name:</label>
+                    <label id="spouse2"></label><br>
+                    Address:<label id="spouse2-eth-add"></label>    
+                </div>
+                <img id="proofPhotoUrl" src="" style="width:150px;height:150px"></img>
+            </div>
+            <div id="sign-proposal">
+                <label>Second Spouse Name:</label>
+                <input id="sp2-name">
+                <label>Your National ID number (hashed): </label>
+                <input id="sp2-id"> <br>
+                <button id="mc-signCert-button">Sign Proposal</button>        
+            </div>
+            <div id="officiate-marriage">
+                <button id="mc-officiateCert-button">Officiate Marriage</button>
+            </div>                  
+        </div><br>
+     
+        <div id="create-cert">
+            <button id="mc-createCert-button">Create Certificate</button>
+            <div id="create-cert-form">
+                <label>Your name: </label>
+                <input id="sp1-name"> <br>
+                <label>Your National ID number (hashed): </label>
+                <input id="sp1-id"> <br>
+                <label>Url of a wedding photo proof: </label>
+                <input id="photo-url"> <br>
+                <button id="create-cert-button">Submit</button>
+            </div>
+        </div>    
+    </div>
+
+
+    <script src='dapp.js'></script>
+</body>
+</html>
