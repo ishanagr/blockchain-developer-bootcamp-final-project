@@ -115,7 +115,7 @@ document.getElementById('mc-officiateCert-button').onclick = async () => {
 
 const mcAddress = '0xf6B3EC02cB6C3998C2375516f7b6D0b5B450e67d'
 
-$.getJSON("../deployed_address.json", function(data){
+$.getJSON("deployed_address.json", function(data){
 	console.log(data.address); 
 	console.log(data.network); 
 }).fail(function(){
