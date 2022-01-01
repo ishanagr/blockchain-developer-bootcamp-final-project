@@ -94,9 +94,9 @@ document.getElementById('mc-getCert-button').onclick = async () => {
 
 document.getElementById('create-cert-button').onclick = async () => {
     $('#message').text('')
-    try {
+	$('#message').text('Your certificate creation will be confirmed soon')
+	try {
         await marriageContract.methods.createCertificate($('#sp1-name').val(),$('#sp1-id').val(), $('#photo-url').val()).send({from: ethereum.selectedAddress})
-		$('#message').text('Your certificate creation will be confirmed soon')
     } catch (err) {
         $('#message').text('Sorry, your transaction failed')
     }
@@ -105,9 +105,9 @@ document.getElementById('create-cert-button').onclick = async () => {
 
 document.getElementById('mc-signCert-button').onclick = async () => {
     $('#message').text('')
-    try {
+	$('#message').text('Your certificate signing will be confirmed soon')
+	try {
         await marriageContract.methods.signCertificate($('#sp2-name').val(),$('#sp2-id').val(),$('#certid').text()).send({from: ethereum.selectedAddress})
-        $('#message').text('Your certificate signing will be confirmed soon')
     } catch (err) {
         $('#message').text('Sorry, your signing transaction failed')
     }    
@@ -117,9 +117,9 @@ document.getElementById('mc-signCert-button').onclick = async () => {
 
 document.getElementById('mc-officiateCert-button').onclick = async () => {
     $('#message').text('')
-    try {
+	$('#message').text('Your certificate officiating will be confirmed soon')
+	try {
         await marriageContract.methods.officiateCertificate($('#certid').text()).send({from: ethereum.selectedAddress})
-        $('#message').text('Your certificate officiating will be confirmed soon')
     } catch (err) {
         $('#message').text('Sorry, your officiating transaction failed')
     }    
