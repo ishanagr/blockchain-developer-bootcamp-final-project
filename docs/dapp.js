@@ -34,12 +34,14 @@ document.getElementById('mm-connect-button').onclick = async () => {
 
     marriageContract.events.MarriageSigned(function(error, event){
         console.log(event)
+		certId = event.returnValues['certId']
         transactionHash = event.transactionHash
         $('#message').text('Congrats! Your marriage certificate with ID ' + certId + ' has been signed with transactionHash ' + transactionHash)
     })
 
     marriageContract.events.MarriageOfficiated(function(error, event){
         console.log(event)
+		certId = event.returnValues['certId']
         transactionHash = event.transactionHash
         $('#message').text('Congrats! Your marriage certificate with ID ' + certId + '  has been officiated with transactionHash ' + transactionHash)
     })
@@ -52,6 +54,7 @@ document.getElementById('mc-createCert-button').onclick = async () => {
 }
 
 document.getElementById('mc-getCert-button').onclick = async () => {
+	$('#message').text('')
     var mc = await marriageContract.methods.certificates($('#mc-input-cert').val()).call()
     $('#certid').text(mc.certId)
     $('#spouse1').text(mc.spouse1.name)
@@ -80,7 +83,7 @@ document.getElementById('create-cert-button').onclick = async () => {
     $('#message').text('')
     try {
         await marriageContract.methods.createCertificate($('#sp1-name').val(),$('#sp1-id').val(), $('#photo-url').val()).send({from: ethereum.selectedAddress})
-        $('#message').text('Your certificate creation will be confirmed soon')
+		$('#message').text('Your certificate creation will be confirmed soon')
     } catch (err) {
         $('#message').text('Sorry, your transaction failed')
     }
@@ -110,238 +113,289 @@ document.getElementById('mc-officiateCert-button').onclick = async () => {
     $('#mc-cert-display').hide()
 }
 
+const mcAddress = '0xf6B3EC02cB6C3998C2375516f7b6D0b5B450e67d'
 
-const mcAddress = '0x626104a350e25f001183fe7826C1dB44e7b7c5cb'
+$.getJSON("../deployed_address.json", function(data){
+	console.log(data.address); 
+	console.log(data.network); 
+}).fail(function(){
+	console.log("An error has occurred.")});
 
 const mcABI = [
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "certId",
-				"type": "uint256"
-			}
-		],
-		"name": "MarriageOfficiated",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "certId",
-				"type": "uint256"
-			}
-		],
-		"name": "MarriageSigned",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "certId",
-				"type": "uint256"
-			}
-		],
-		"name": "ProposalCreated",
-		"type": "event"
-	},
-	{
-		"stateMutability": "nonpayable",
-		"type": "fallback"
-	},
-	{
-		"inputs": [],
-		"name": "certCount",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "certificates",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "certId",
-				"type": "uint256"
-			},
-			{
-				"components": [
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "ethAdd",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "signedId",
-						"type": "string"
-					}
-				],
-				"internalType": "struct MarriageCertificate.Spouse",
-				"name": "spouse1",
-				"type": "tuple"
-			},
-			{
-				"components": [
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "ethAdd",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "signedId",
-						"type": "string"
-					}
-				],
-				"internalType": "struct MarriageCertificate.Spouse",
-				"name": "spouse2",
-				"type": "tuple"
-			},
-			{
-				"internalType": "enum MarriageCertificate.State",
-				"name": "state",
-				"type": "uint8"
-			},
-			{
-				"internalType": "string",
-				"name": "proofPhotoUrl",
-				"type": "string"
-			},
-			{
-				"internalType": "address",
-				"name": "officiatedBy",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_signedId",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_proofPhotoUrl",
-				"type": "string"
-			}
-		],
-		"name": "createCertificate",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "marriedCertificates",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "certId",
-				"type": "uint256"
-			}
-		],
-		"name": "officiateCertificate",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_signedId",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "certId",
-				"type": "uint256"
-			}
-		],
-		"name": "signCertificate",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	}
-]
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "certId",
+          "type": "uint256"
+        }
+      ],
+      "name": "MarriageOfficiated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "certId",
+          "type": "uint256"
+        }
+      ],
+      "name": "MarriageSigned",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "certId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ProposalCreated",
+      "type": "event"
+    },
+    {
+      "stateMutability": "nonpayable",
+      "type": "fallback"
+    },
+    {
+      "inputs": [],
+      "name": "certCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "certificates",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "certId",
+          "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "ethAdd",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "signedId",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct MarriageCertificate.Spouse",
+          "name": "spouse1",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "ethAdd",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "signedId",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct MarriageCertificate.Spouse",
+          "name": "spouse2",
+          "type": "tuple"
+        },
+        {
+          "internalType": "enum MarriageCertificate.State",
+          "name": "state",
+          "type": "uint8"
+        },
+        {
+          "internalType": "string",
+          "name": "proofPhotoUrl",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "officiatedBy",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "marriedCertificates",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_signedId",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_proofPhotoUrl",
+          "type": "string"
+        }
+      ],
+      "name": "createCertificate",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_signedId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "certId",
+          "type": "uint256"
+        }
+      ],
+      "name": "signCertificate",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "certId",
+          "type": "uint256"
+        }
+      ],
+      "name": "officiateCertificate",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    }
+  ]

@@ -9,7 +9,7 @@ https://ishanagr.github.io/blockchain-developer-bootcamp-final-project/
 ### Prerequisites
 
 - Node.js >= v14
-- Truffle and Ganache
+- Truffle and Ganache GUI
 
 ### Contracts
 

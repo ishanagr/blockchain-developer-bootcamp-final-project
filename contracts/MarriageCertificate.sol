@@ -84,7 +84,7 @@ contract MarriageCertificate is Ownable {
       }),
       state: State.Proposed,
       proofPhotoUrl: _proofPhotoUrl,
-      officiatedBy:  0x0000000000000000000000000000000000000000
+      officiatedBy:  0x0000000000000000000000000000000000000000,
     });
     emit ProposalCreated(certCount);
   }
