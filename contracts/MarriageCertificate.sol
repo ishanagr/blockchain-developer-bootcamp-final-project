@@ -17,6 +17,8 @@ contract MarriageCertificate is Ownable {
   mapping (uint => Certificate) public certificates;
   mapping (address => uint) public marriedCertificates;
 
+// TODO: Add registration and signing fee paid out to the officiator for their work
+
 /// @notice Maintains states in lifecycle of marriage registry
   enum State {Proposed, Signed, Officiated}
 
@@ -112,7 +114,7 @@ contract MarriageCertificate is Ownable {
   /// @param certId certificate ID for the certificate you would like to officiate
   function officiateCertificate(uint certId) public onlyOwner payable {
     //TODO: use roles from openzeppelin for contract owner to assign officiator role to others 
-    
+
     //check if the current state is signed
     require(certificates[certId].state == State.Signed);
     certificates[certId].state = State.Officiated;
