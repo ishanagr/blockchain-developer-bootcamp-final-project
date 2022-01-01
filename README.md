@@ -10,6 +10,7 @@ https://ishanagr.github.io/blockchain-developer-bootcamp-final-project/
 
 - Node.js >= v14
 - Truffle and Ganache GUI
+- Run `npm install`
 
 ### Contracts
 

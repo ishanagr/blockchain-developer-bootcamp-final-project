@@ -9,7 +9,7 @@ $.getJSON("deployed_address.json", function(data){
 	console.log("An error has occurred while fetching contract address")});
 
 $.getJSON("abi.json", function(data){
-	mcAddress = data
+	mcABI = data
 }).fail(function(){
 	console.log("An error has occurred while fetching contract ABI")});
 	
