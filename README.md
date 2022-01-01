@@ -21,6 +21,7 @@ https://ishanagr.github.io/blockchain-developer-bootcamp-final-project/
 
 ### Frontend
 
+- Update docs/deployed_address.json with the deployed contract address 
 - Open `docs/index.html` in your browser of choice
 
 
@@ -54,16 +55,16 @@ For this to work in the real world, it would need to be integrated with govertme
 
 ## Directory structure
 
-- `web`: Project's vanialla html and js frontend.
-- `contracts`: Smart contracts that are deployed in the Ropsten testnet.
+- `docs`: Project's vanialla html and js frontend running as github pages. abi and contract address are also stored as files here.
+- `contracts`: Smart contracts that are deployed in the Rinkeby testnet.
 - `migrations`: Migration files for deploying contracts in `contracts` directory.
 - `test`: Tests for smart contracts.
 
 ## Environment variables (not needed for running project locally)
 
 ```
-ROPSTEN_INFURA_PROJECT_ID=
-ROPSTEN_MNEMONIC=
+INFURA_URL=
+MNEMONIC=
 ```
 
 ## TODO features
