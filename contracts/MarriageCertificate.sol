@@ -2,14 +2,15 @@
 pragma solidity 0.8.0;
 // pragma experimental ABIEncoderV2;
 
+import "@openzeppelin/contracts/access/Ownable.sol";
+
 /// @title Contract for Ethereum Marriage Certificates
 /// @author Ishan Agrawal
 /// @notice Allows users to registery marriage on ethereum blockchain
 /// @dev Fee payment to the officiater to be added. 
 /// @dev Oracles to validate national ID to be added
-contract MarriageCertificate {
+contract MarriageCertificate is Ownable {
 
-  address public owner;
 
   uint public certCount;
 
@@ -46,12 +47,10 @@ contract MarriageCertificate {
 
 
   constructor() {
-    owner = msg.sender;
     certCount = 0;
   }
 
-// TODO: add comments
-  fallback () external payable {
+  fallback () external {
       revert();
   }
 
@@ -111,8 +110,9 @@ contract MarriageCertificate {
 
   /// @notice Officiate marriage certificate by the second spouse 
   /// @param certId certificate ID for the certificate you would like to officiate
-  function officiateCertificate(uint certId) public payable {
-    require(msg.sender == owner);
+  function officiateCertificate(uint certId) public onlyOwner payable {
+    //TODO: use roles from openzeppelin for contract owner to assign officiator role to others 
+    
     //check if the current state is signed
     require(certificates[certId].state == State.Signed);
     certificates[certId].state = State.Officiated;
